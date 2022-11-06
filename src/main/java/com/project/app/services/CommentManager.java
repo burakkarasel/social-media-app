@@ -4,8 +4,6 @@ import com.project.app.entities.Comment;
 import com.project.app.entities.Post;
 import com.project.app.entities.User;
 import com.project.app.repos.CommentRepository;
-import com.project.app.repos.PostRepository;
-import com.project.app.repos.UserRepository;
 import com.project.app.requests.CommentCreateRequest;
 import com.project.app.requests.CommentUpdateRequest;
 import lombok.Setter;
@@ -20,33 +18,29 @@ import java.util.Optional;
 @Setter
 public class CommentManager implements CommentService{
     private CommentRepository commentRepository;
-    private PostRepository postRepository;
+    private PostService postService;
 
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public CommentManager(CommentRepository _commentRepository, PostRepository _postRepository, UserRepository _userRepository){
+    public CommentManager(CommentRepository _commentRepository, PostService _postService, UserService _userService){
         this.commentRepository = _commentRepository;
-        this.postRepository = _postRepository;
-        this.userRepository = _userRepository;
+        this.postService = _postService;
+        this.userService = _userService;
     }
 
     @Override
     public List<Comment> getComments(Optional<Long> postId, Optional<Long> userId) {
+        if (postId.isPresent() && userId.isPresent()) {
+            return this.commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
+        }
+
         if(postId.isPresent()){
-            Long postIdToGet = postId.get();
-            Optional<Post> postToGet = this.postRepository.findById(postIdToGet);
-            if(postToGet.isPresent()){
-                return this.commentRepository.findByPostId(postIdToGet);
-            }
+            return this.commentRepository.findByPostId(postId.get());
         }
 
         if(userId.isPresent()){
-            Long userIdToGet = userId.get();
-            Optional< User> userToGet = this.userRepository.findById(userIdToGet);
-            if(userToGet.isPresent()){
-                return this.commentRepository.findByUserId(userIdToGet);
-            }
+            return this.commentRepository.findByUserId(userId.get());
         }
 
         return this.commentRepository.findAll();
@@ -54,16 +48,14 @@ public class CommentManager implements CommentService{
 
     @Override
     public Comment createComment(CommentCreateRequest newComment) {
-        Optional<Post> postToGet = this.postRepository.findById(newComment.getPostId());
-        Optional<User> userToGet = this.userRepository.findById(newComment.getUserId());
-        if(postToGet.isPresent() && userToGet.isPresent()){
-            Post gotPost = postToGet.get();
-            User gotUser = userToGet.get();
-
+        Post postToGet = this.postService.getPostById(newComment.getPostId());
+        User userToGet = this.userService.getUserById(newComment.getUserId());
+        if(postToGet != null && userToGet != null){
             Comment toSave = new Comment();
+
             toSave.setText(newComment.getText());
-            toSave.setPost(gotPost);
-            toSave.setUser(gotUser);
+            toSave.setPost(postToGet);
+            toSave.setUser(userToGet);
 
             return this.commentRepository.save(toSave);
         }
@@ -81,9 +73,8 @@ public class CommentManager implements CommentService{
         Optional<Comment> commentToGet = this.commentRepository.findById(commentId);
         if (commentToGet.isPresent()) {
             Comment gotComment = commentToGet.get();
-            gotComment.setText(newComment.getText());
 
-            this.commentRepository.deleteById(gotComment.getId());
+            gotComment.setText(newComment.getText());
             return this.commentRepository.save(gotComment);
         }
         return null;

@@ -61,8 +61,7 @@ public class PostManager implements PostService{
             Post toUpdate = oldPost.get();
             toUpdate.setTitle(updatedPost.getTitle());
             toUpdate.setText(updatedPost.getText());
-
-            this.postRepository.deleteById(postId);
+            toUpdate.setId(postId);
             return this.postRepository.save(toUpdate);
         }
         return null;

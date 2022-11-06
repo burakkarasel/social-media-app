@@ -45,7 +45,7 @@ public class UserManager implements UserService{
         if(user == null){
             return null;
         }
-        this.userRepository.deleteById(userId);
+        newUser.setId(userId);
         return this.userRepository.save(newUser);
     }
 }

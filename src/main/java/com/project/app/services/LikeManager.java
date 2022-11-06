@@ -4,8 +4,6 @@ import com.project.app.entities.Like;
 import com.project.app.entities.Post;
 import com.project.app.entities.User;
 import com.project.app.repos.LikeRepository;
-import com.project.app.repos.PostRepository;
-import com.project.app.repos.UserRepository;
 import com.project.app.requests.LikeCreateRequest;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,33 +16,27 @@ import java.util.Optional;
 @Setter
 public class LikeManager implements LikeService{
     private LikeRepository likeRepository;
-    private PostRepository postRepository;
-    private UserRepository userRepository;
+    private PostService postService;
+    private UserService userService;
 
     @Autowired
-    public LikeManager(LikeRepository _likeRepository, PostRepository _postRepository, UserRepository _userRepository){
+    public LikeManager(LikeRepository _likeRepository, PostService _postService, UserService _userService){
         this.likeRepository = _likeRepository;
-        this.postRepository = _postRepository;
-        this.userRepository = _userRepository;
+        this.postService = _postService;
+        this.userService = _userService;
     }
 
 
     @Override
     public List<Like> getLikes(Optional<Long> postId, Optional<Long> userId) {
-        if(postId.isPresent()){
-            Long postIdToGet = postId.get();
-            Optional<Post> postToGet = this.postRepository.findById(postIdToGet);
-            if(postToGet.isPresent()){
-                return this.likeRepository.findByPostId(postIdToGet);
-            }
+        if (postId.isPresent() && userId.isPresent()) {
+            return this.likeRepository.findByUserIdAndPostId(userId.get(), postId.get());
         }
-
+        if(postId.isPresent()){
+            return this.likeRepository.findByPostId(postId.get());
+        }
         if(userId.isPresent()){
-            Long userIdToGet = userId.get();
-            Optional<User> userToGet = this.userRepository.findById(userIdToGet);
-            if(userToGet.isPresent()){
-                return this.likeRepository.findByUserId(userIdToGet);
-            }
+            return this.likeRepository.findByUserId(userId.get());
         }
 
         return this.likeRepository.findAll();
@@ -52,16 +44,12 @@ public class LikeManager implements LikeService{
 
     @Override
     public Like createLike(LikeCreateRequest newLike) {
-        Optional<Post> postToGet = this.postRepository.findById(newLike.getPostId());
-        Optional<User> userToGet = this.userRepository.findById(newLike.getUserId());
-        if(postToGet.isPresent() && userToGet.isPresent()){
-            Post gotPost = postToGet.get();
-            User gotUser = userToGet.get();
-
+        Post postToGet = this.postService.getPostById(newLike.getPostId());
+        User userToGet = this.userService.getUserById(newLike.getUserId());
+        if(postToGet != null && userToGet != null){
             Like toSave = new Like();
-
-            toSave.setPost(gotPost);
-            toSave.setUser(gotUser);
+            toSave.setPost(postToGet);
+            toSave.setUser(userToGet);
 
             return this.likeRepository.save(toSave);
         }
