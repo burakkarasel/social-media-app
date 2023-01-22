@@ -2,6 +2,7 @@ package com.kullop.socialMediaAppBackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,11 @@ public class Post {
     @JsonIgnore
     private User user;
 
+    @NotNull
     private String title;
 
     @Lob
     @Column(columnDefinition = "text")
+    @NotNull
     private String content;
 }

@@ -2,6 +2,7 @@ package com.kullop.socialMediaAppBackend.controllers;
 
 import com.kullop.socialMediaAppBackend.entities.User;
 import com.kullop.socialMediaAppBackend.services.abstracts.UserQueryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,12 @@ public class UserQueryController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public ResponseEntity<Object> getAllUsers(){
         return this.userQueryService.getAllUsers();
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId){
+    public ResponseEntity<Object> getUserById(@PathVariable Long userId){
         return this.userQueryService.getUserById(userId);
     }
 }

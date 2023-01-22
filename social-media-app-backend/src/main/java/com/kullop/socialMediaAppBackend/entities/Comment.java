@@ -2,6 +2,7 @@ package com.kullop.socialMediaAppBackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,8 +24,9 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
-    
+
     @Lob
     @Column(columnDefinition = "text")
+    @NotNull
     private String content;
 }

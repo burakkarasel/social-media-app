@@ -15,7 +15,7 @@ public class UserProvisionController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public ResponseEntity<Object> createUser(@RequestBody User user){
         return this.userProvisionService.createUser(user);
     }
 

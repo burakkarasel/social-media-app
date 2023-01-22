@@ -18,16 +18,15 @@ public class UserProvisionManager implements UserProvisionService {
     }
 
     @Override
-    public User createUser(User user) {
-        return this.userDao.createUser(user);
+    public ResponseEntity<Object> createUser(User user) {
+        User createdUser = this.userDao.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Object> updateUserById(Long id, User user) {
-        Boolean userExists = this.userDao.isUserExist(id);
         HashMap<String, String> response = new HashMap<>();
-
-        if(!userExists){
+        if(!this.userDao.isUserExist(id)){
             response.put("message", "user not found");
             return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
         }
@@ -40,10 +39,8 @@ public class UserProvisionManager implements UserProvisionService {
 
     @Override
     public ResponseEntity<Object> deleteUserById(Long id) {
-        Boolean userExists = this.userDao.isUserExist(id);
         HashMap<String, String> response = new HashMap<>();
-
-        if(!userExists){
+        if(!this.userDao.isUserExist(id)){
             response.put("message", "user not found");
             return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
         }

@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserDao{
@@ -23,8 +24,8 @@ public class UserDao{
         return this.userRepository.save(user);
     }
 
-    public User getUserById(Long userId){
-        return this.userRepository.findById(userId).orElse(null);
+    public Optional<User> getUserById(Long userId){
+        return this.userRepository.findById(userId);
     }
 
     @Transactional
