@@ -1,6 +1,8 @@
 package com.kullop.socialMediaAppBackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kullop.socialMediaAppBackend.requests.PostCreateRequest;
+import com.kullop.socialMediaAppBackend.requests.PostUpdateRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,4 +36,17 @@ public class Post {
     @Column(columnDefinition = "text")
     @NotNull
     private String content;
+
+    public Post(PostCreateRequest postCreateRequest, User _user){
+        this.content = postCreateRequest.getContent();
+        this.title = postCreateRequest.getTitle();
+        this.user = _user;
+    }
+
+    public Post(PostUpdateRequest postUpdateRequest, User _user, Long postId){
+        this.id = postId;
+        this.content = postUpdateRequest.getContent();
+        this.title = postUpdateRequest.getTitle();
+        this.user = _user;
+    }
 }

@@ -29,8 +29,8 @@ public class UserDao{
     }
 
     @Transactional
-    public void updateUserById(User user){
-        this.userRepository.updateUserById(user.getUsername(), user.getPassword(), user.getId());
+    public void updateUserById(User user, Long userId){
+        this.userRepository.updateUserById(user.getUsername(), user.getPassword(), userId);
     }
 
     public Boolean isUserExist(Long userId){

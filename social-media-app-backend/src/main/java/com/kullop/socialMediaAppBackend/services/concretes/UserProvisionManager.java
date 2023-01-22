@@ -2,6 +2,7 @@ package com.kullop.socialMediaAppBackend.services.concretes;
 
 import com.kullop.socialMediaAppBackend.entities.User;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
+import com.kullop.socialMediaAppBackend.requests.UserRequest;
 import com.kullop.socialMediaAppBackend.services.abstracts.UserProvisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,21 +19,20 @@ public class UserProvisionManager implements UserProvisionService {
     }
 
     @Override
-    public ResponseEntity<Object> createUser(User user) {
-        User createdUser = this.userDao.createUser(user);
+    public ResponseEntity<Object> createUser(UserRequest userRequest) {
+        User createdUser = this.userDao.createUser(new User(userRequest));
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Object> updateUserById(Long id, User user) {
+    public ResponseEntity<Object> updateUserById(Long id, UserRequest userRequest) {
         HashMap<String, String> response = new HashMap<>();
         if(!this.userDao.isUserExist(id)){
             response.put("message", "user not found");
-            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>( response ,HttpStatus.NOT_FOUND);
         }
-        user.setId(id);
-        this.userDao.updateUserById(user);
-
+        User toUpdate = new User(userRequest);
+        this.userDao.updateUserById(toUpdate, id);
         response.put("message", "success");
         return new ResponseEntity<>(response ,HttpStatus.OK);
     }

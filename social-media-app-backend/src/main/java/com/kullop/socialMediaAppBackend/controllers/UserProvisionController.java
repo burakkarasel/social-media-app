@@ -1,6 +1,7 @@
 package com.kullop.socialMediaAppBackend.controllers;
 
 import com.kullop.socialMediaAppBackend.entities.User;
+import com.kullop.socialMediaAppBackend.requests.UserRequest;
 import com.kullop.socialMediaAppBackend.services.abstracts.UserProvisionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,13 @@ public class UserProvisionController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody User user){
-        return this.userProvisionService.createUser(user);
+    public ResponseEntity<Object> createUser(@RequestBody UserRequest userRequest){
+        return this.userProvisionService.createUser(userRequest);
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<Object> updateUserById(@PathVariable Long userId, @RequestBody User user){
-        return this.userProvisionService.updateUserById(userId, user);
+    public ResponseEntity<Object> updateUserById(@PathVariable Long userId, @RequestBody UserRequest userRequest){
+        return this.userProvisionService.updateUserById(userId, userRequest);
     }
 
     @DeleteMapping("/{userId}")

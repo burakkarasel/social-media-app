@@ -29,11 +29,12 @@ public class UserQueryManager implements UserQueryService {
     @Override
     public ResponseEntity<Object> getUserById(Long userId) {
         Optional<User> user = this.userDao.getUserById(userId);
-        if(user.isPresent()){
-            return new ResponseEntity<>(user, HttpStatus.OK);
+        if(user.isEmpty()){
+            HashMap<String, String > response = new HashMap<>();
+            response.put("message", "user not found");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        HashMap<String, String > response = new HashMap<>();
-        response.put("message", "user not found");
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
     }
 }

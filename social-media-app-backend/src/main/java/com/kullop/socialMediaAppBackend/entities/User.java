@@ -1,5 +1,6 @@
 package com.kullop.socialMediaAppBackend.entities;
 
+import com.kullop.socialMediaAppBackend.requests.UserRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    public User(UserRequest userRequest){
+        this.setUsername(userRequest.getUsername());
+        this.setPassword(userRequest.getPassword());
+    }
 }
