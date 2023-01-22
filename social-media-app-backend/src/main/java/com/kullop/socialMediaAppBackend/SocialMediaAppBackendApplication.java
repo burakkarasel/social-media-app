@@ -1,9 +1,11 @@
-package com.kullop.socialmediaappbackend;
+package com.kullop.socialMediaAppBackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {
+		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class}
+)
 public class SocialMediaAppBackendApplication {
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.kullop.socialmediaappbackend;
+package com.kullop.socialMediaAppBackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
