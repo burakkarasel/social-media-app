@@ -1,7 +1,6 @@
 package com.kullop.socialMediaAppBackend.repositories.abstracts;
 
 import com.kullop.socialMediaAppBackend.entities.Comment;
-import com.kullop.socialMediaAppBackend.requests.CommentUpdateRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
