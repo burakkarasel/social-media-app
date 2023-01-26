@@ -1,6 +1,5 @@
 package com.kullop.socialMediaAppBackend.controllers;
 
-import com.kullop.socialMediaAppBackend.entities.User;
 import com.kullop.socialMediaAppBackend.services.abstracts.UserQueryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

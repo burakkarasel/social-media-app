@@ -20,7 +20,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

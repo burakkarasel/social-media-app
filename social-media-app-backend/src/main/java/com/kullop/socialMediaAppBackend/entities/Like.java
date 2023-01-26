@@ -1,7 +1,6 @@
 package com.kullop.socialMediaAppBackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kullop.socialMediaAppBackend.requests.LikeCreateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 public class Like {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

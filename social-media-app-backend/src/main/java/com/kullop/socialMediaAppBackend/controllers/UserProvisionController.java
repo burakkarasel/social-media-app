@@ -1,6 +1,5 @@
 package com.kullop.socialMediaAppBackend.controllers;
 
-import com.kullop.socialMediaAppBackend.entities.User;
 import com.kullop.socialMediaAppBackend.requests.UserRequest;
 import com.kullop.socialMediaAppBackend.services.abstracts.UserProvisionService;
 import org.springframework.http.ResponseEntity;

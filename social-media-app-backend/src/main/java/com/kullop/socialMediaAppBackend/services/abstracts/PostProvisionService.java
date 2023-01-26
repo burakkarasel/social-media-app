@@ -1,6 +1,5 @@
 package com.kullop.socialMediaAppBackend.services.abstracts;
 
-import com.kullop.socialMediaAppBackend.entities.Post;
 import com.kullop.socialMediaAppBackend.requests.PostCreateRequest;
 import com.kullop.socialMediaAppBackend.requests.PostUpdateRequest;
 import org.springframework.http.ResponseEntity;

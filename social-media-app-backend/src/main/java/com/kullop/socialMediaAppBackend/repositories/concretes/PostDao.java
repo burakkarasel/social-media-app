@@ -2,6 +2,7 @@ package com.kullop.socialMediaAppBackend.repositories.concretes;
 
 import com.kullop.socialMediaAppBackend.entities.Post;
 import com.kullop.socialMediaAppBackend.repositories.abstracts.PostRepository;
+import com.kullop.socialMediaAppBackend.responses.PostResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,6 @@ public class PostDao {
         return this.postRepository.findById(id);
     }
 
-    public List<Post> getAllPosts(){
-        return this.postRepository.findAll();
-    }
-
-    public List<Post> getAllPostsByUserId(Long userId){
-        return this.postRepository.findPostsByUserId(userId);
-    }
-
     public Boolean isPostExists(Long postId){
         return this.postRepository.existsById(postId);
     }
@@ -43,5 +36,17 @@ public class PostDao {
 
     public void deletePostById(Long postId){
         this.postRepository.deleteById(postId);
+    }
+
+    public List<PostResponse> fetchPostsWithLikeCount(){
+        return this.postRepository.fetchPostsWithLikeCount();
+    }
+
+    public List<PostResponse> fetchPostsWithLikeCountByUserId(Long userId){
+        return this.postRepository.fetchPostsWithLikeCountByUserId(userId);
+    }
+
+    public PostResponse fetchPostWithLikeCountByPostId(Long postId){
+        return this.postRepository.fetchPostWithLikeCountByPostId(postId);
     }
 }
