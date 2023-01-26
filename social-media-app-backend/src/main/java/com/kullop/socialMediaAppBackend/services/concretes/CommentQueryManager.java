@@ -4,7 +4,9 @@ import com.kullop.socialMediaAppBackend.entities.Comment;
 import com.kullop.socialMediaAppBackend.repositories.concretes.CommentDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.PostDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
+import com.kullop.socialMediaAppBackend.responses.CommentResponse;
 import com.kullop.socialMediaAppBackend.services.abstracts.CommentQueryService;
+import com.kullop.socialMediaAppBackend.utils.ResponseConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,8 @@ public class CommentQueryManager implements CommentQueryService {
     @Override
     public ResponseEntity<Object> getAllComments() {
         List<Comment> comments = this.commentDao.getAllComments();
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+        List<CommentResponse> commentResponses = ResponseConverter.commentConverter(comments);
+        return new ResponseEntity<>(commentResponses, HttpStatus.OK);
     }
 
     @Override
@@ -39,14 +42,15 @@ public class CommentQueryManager implements CommentQueryService {
             response.put("message", "comment not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(comment.get(), HttpStatus.OK);
+        return new ResponseEntity<>(new CommentResponse(comment.get()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Object> getCommentsByPostId(Long postId) {
         if(this.postDao.isPostExists(postId)){
             List<Comment> comments = this.commentDao.getCommentsByPostId(postId);
-            return new ResponseEntity<>(comments, HttpStatus.OK);
+            List<CommentResponse> commentResponses = ResponseConverter.commentConverter(comments);
+            return new ResponseEntity<>(commentResponses, HttpStatus.OK);
         }
 
         HashMap<String,String> response = new HashMap<>();
@@ -58,7 +62,8 @@ public class CommentQueryManager implements CommentQueryService {
     public ResponseEntity<Object> getCommentsByUserId(Long userId) {
         if(this.userDao.isUserExist(userId)){
             List<Comment> comments = this.commentDao.getCommentsByUserId(userId);
-            return new ResponseEntity<>(comments, HttpStatus.OK);
+            List<CommentResponse> commentResponses = ResponseConverter.commentConverter(comments);
+            return new ResponseEntity<>(commentResponses, HttpStatus.OK);
         }
 
         HashMap<String,String> response = new HashMap<>();
@@ -81,6 +86,7 @@ public class CommentQueryManager implements CommentQueryService {
         }
 
         List<Comment> comments = this.commentDao.getCommentsByPostIdAndUserId(postId, userId);
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+        List<CommentResponse> commentResponses = ResponseConverter.commentConverter(comments);
+        return new ResponseEntity<>(commentResponses, HttpStatus.OK);
     }
 }

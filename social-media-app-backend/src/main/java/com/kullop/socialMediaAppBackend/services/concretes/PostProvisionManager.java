@@ -6,6 +6,7 @@ import com.kullop.socialMediaAppBackend.repositories.concretes.PostDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
 import com.kullop.socialMediaAppBackend.requests.PostCreateRequest;
 import com.kullop.socialMediaAppBackend.requests.PostUpdateRequest;
+import com.kullop.socialMediaAppBackend.responses.PostResponse;
 import com.kullop.socialMediaAppBackend.services.abstracts.PostProvisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class PostProvisionManager implements PostProvisionService {
         }
         Post postToSave = new Post(post, user.get());
         Post createdPost = this.postDao.createPost(postToSave);
-        return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
+        return new ResponseEntity<>(new PostResponse(createdPost), HttpStatus.CREATED);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class PostProvisionManager implements PostProvisionService {
         post.get().setTitle(postUpdateRequest.getTitle());
         postDao.updatePostById(post.get());
 
-        return new ResponseEntity<>(post.get(), HttpStatus.OK);
+        return new ResponseEntity<>(new PostResponse(post.get()), HttpStatus.OK);
     }
 
     @Override

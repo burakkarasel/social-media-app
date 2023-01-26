@@ -3,6 +3,7 @@ package com.kullop.socialMediaAppBackend.services.concretes;
 import com.kullop.socialMediaAppBackend.entities.User;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
 import com.kullop.socialMediaAppBackend.requests.UserRequest;
+import com.kullop.socialMediaAppBackend.responses.UserResponse;
 import com.kullop.socialMediaAppBackend.services.abstracts.UserProvisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserProvisionManager implements UserProvisionService {
     @Override
     public ResponseEntity<Object> createUser(UserRequest userRequest) {
         User createdUser = this.userDao.createUser(new User(userRequest));
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(new UserResponse(createdUser), HttpStatus.CREATED);
     }
 
     @Override

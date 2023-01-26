@@ -8,6 +8,7 @@ import com.kullop.socialMediaAppBackend.repositories.concretes.PostDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
 import com.kullop.socialMediaAppBackend.requests.CommentCreateRequest;
 import com.kullop.socialMediaAppBackend.requests.CommentUpdateRequest;
+import com.kullop.socialMediaAppBackend.responses.CommentResponse;
 import com.kullop.socialMediaAppBackend.services.abstracts.CommentProvisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class CommentProvisionManager implements CommentProvisionService {
         }
 
         Comment comment = this.commentDao.createComment(new Comment(commentCreateRequest, user.get(), post.get()));
-        return new ResponseEntity<>(comment, HttpStatus.CREATED);
+        return new ResponseEntity<>(new CommentResponse(comment), HttpStatus.CREATED);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class CommentProvisionManager implements CommentProvisionService {
         }
         comment.get().setContent(commentUpdateRequest.getContent());
         this.commentDao.updateCommentById(commentId, comment.get());
-        return new ResponseEntity<>(comment.get(), HttpStatus.OK);
+        return new ResponseEntity<>(new CommentResponse(comment.get()), HttpStatus.OK);
     }
 
     @Override

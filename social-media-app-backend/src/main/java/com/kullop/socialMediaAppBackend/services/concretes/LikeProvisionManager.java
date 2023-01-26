@@ -7,6 +7,7 @@ import com.kullop.socialMediaAppBackend.repositories.concretes.LikeDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.PostDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
 import com.kullop.socialMediaAppBackend.requests.LikeCreateRequest;
+import com.kullop.socialMediaAppBackend.responses.LikeResponse;
 import com.kullop.socialMediaAppBackend.services.abstracts.LikeProvisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class LikeProvisionManager implements LikeProvisionService {
         }
 
         Like like =this.likeDao.createLike(new Like(user.get(), post.get()));
-        return new ResponseEntity<>(like, HttpStatus.CREATED);
+        return new ResponseEntity<>(new LikeResponse(like), HttpStatus.CREATED);
     }
 
     @Override

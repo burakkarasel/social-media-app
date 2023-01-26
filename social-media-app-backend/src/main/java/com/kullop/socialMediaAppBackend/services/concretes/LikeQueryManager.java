@@ -4,7 +4,9 @@ import com.kullop.socialMediaAppBackend.entities.Like;
 import com.kullop.socialMediaAppBackend.repositories.concretes.LikeDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.PostDao;
 import com.kullop.socialMediaAppBackend.repositories.concretes.UserDao;
+import com.kullop.socialMediaAppBackend.responses.LikeResponse;
 import com.kullop.socialMediaAppBackend.services.abstracts.LikeQueryService;
+import com.kullop.socialMediaAppBackend.utils.ResponseConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,8 @@ public class LikeQueryManager implements LikeQueryService {
     @Override
     public ResponseEntity<Object> getAllLikes() {
         List<Like> likes = this.likeDao.getAllLikes();
-        return new ResponseEntity<>(likes, HttpStatus.OK);
+        List<LikeResponse> likeResponses = ResponseConverter.likeConverter(likes);
+        return new ResponseEntity<>(likeResponses, HttpStatus.OK);
     }
 
     @Override
@@ -41,7 +44,8 @@ public class LikeQueryManager implements LikeQueryService {
         }
 
         List<Like> likes = this.likeDao.getLikesByPostId(postId);
-        return new ResponseEntity<>(likes, HttpStatus.OK);
+        List<LikeResponse> likeResponses = ResponseConverter.likeConverter(likes);
+        return new ResponseEntity<>(likeResponses, HttpStatus.OK);
     }
 
     @Override
@@ -53,7 +57,8 @@ public class LikeQueryManager implements LikeQueryService {
         }
 
         List<Like> likes = this.likeDao.getLikesByUserId(userId);
-        return new ResponseEntity<>(likes, HttpStatus.OK);
+        List<LikeResponse> likeResponses = ResponseConverter.likeConverter(likes);
+        return new ResponseEntity<>(likeResponses, HttpStatus.OK);
     }
 
     @Override
@@ -71,7 +76,8 @@ public class LikeQueryManager implements LikeQueryService {
         }
 
         List<Like> likes = this.likeDao.getLikesByPostIdAndUserId(postId, userId);
-        return new ResponseEntity<>(likes, HttpStatus.OK);
+        List<LikeResponse> likeResponses = ResponseConverter.likeConverter(likes);
+        return new ResponseEntity<>(likeResponses, HttpStatus.OK);
     }
 
     @Override
@@ -84,6 +90,6 @@ public class LikeQueryManager implements LikeQueryService {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(like.get(), HttpStatus.OK);
+        return new ResponseEntity<>(new LikeResponse(like.get()), HttpStatus.OK);
     }
 }
