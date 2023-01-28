@@ -40,18 +40,18 @@ public class PostProvisionManager implements PostProvisionService {
 
     @Override
     public ResponseEntity<Object> updatePostById(PostUpdateRequest postUpdateRequest, Long postId) {
-        Optional<Post> post = postDao.getPostById(postId);
-        if(post.isEmpty()){
+        PostResponse post = postDao.fetchPostWithLikeCountByPostId(postId);
+        if(post == null){
             HashMap<String, String> response = new HashMap<>();
             response.put("message", "post not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        post.get().setContent(postUpdateRequest.getContent());
-        post.get().setTitle(postUpdateRequest.getTitle());
-        postDao.updatePostById(post.get());
+        post.setContent(postUpdateRequest.getContent());
+        post.setTitle(postUpdateRequest.getTitle());
+        postDao.updatePostById(new Post(post));
 
-        return new ResponseEntity<>(new PostResponse(post.get()), HttpStatus.OK);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @Override

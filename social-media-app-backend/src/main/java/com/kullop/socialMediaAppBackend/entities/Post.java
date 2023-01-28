@@ -3,6 +3,7 @@ package com.kullop.socialMediaAppBackend.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kullop.socialMediaAppBackend.requests.PostCreateRequest;
 import com.kullop.socialMediaAppBackend.requests.PostUpdateRequest;
+import com.kullop.socialMediaAppBackend.responses.PostResponse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -43,10 +44,9 @@ public class Post {
         this.user = _user;
     }
 
-    public Post(PostUpdateRequest postUpdateRequest, User _user, Long postId){
-        this.id = postId;
-        this.content = postUpdateRequest.getContent();
-        this.title = postUpdateRequest.getTitle();
-        this.user = _user;
+    public Post(PostResponse postResponse){
+        this.id = postResponse.getId();
+        this.content = postResponse.getContent();
+        this.title = postResponse.getTitle();
     }
 }

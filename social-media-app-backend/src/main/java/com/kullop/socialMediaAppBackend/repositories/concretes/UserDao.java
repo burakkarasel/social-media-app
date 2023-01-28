@@ -41,4 +41,8 @@ public class UserDao{
     public void deleteUserById(Long userId){
         this.userRepository.deleteById(userId);
     }
+
+    public User findByUsername(String username){
+        return this.userRepository.findByUsername(username);
+    }
 }
